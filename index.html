@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OOZE LABS — VRF-fair Solana RPC</title>
+<meta name="description" content="A public Solana test-validator running the Ooze fair-ordering scheduler. Drip test SOL. Send transactions. Watch fairness work.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- JetBrains Mono for body, VT323 for the big terminal display -->
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=VT323&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<div class="scanlines" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a href="https://ooze.run" class="logo">OOZE</a>
+  <nav>
+    <a href="https://ooze.run">FORENSICS</a>
+    <a href="https://dashboard.ooze.run">DASHBOARD</a>
+    <a href="/" class="active">LABS</a>
+    <a href="https://github.com/SwagasaurusFLEX" target="_blank" rel="noopener">GITHUB</a>
+    <a href="https://twitter.com/0ooozzzzeeee" target="_blank" rel="noopener">X</a>
+  </nav>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-pre">// experimental rig &middot; not real money</div>
+    <h1 class="title">
+      <span class="bracket">[</span>OOZE&nbsp;LABS<span class="bracket">]</span>
+      <span class="cursor">_</span>
+    </h1>
+    <p class="tag">A public Solana test-validator running the Ooze fair-ordering scheduler.<br>
+       Drip test SOL. Send transactions. Watch fairness work.</p>
+  </section>
+
+  <section class="status" id="status-grid">
+    <div class="stat">
+      <div class="stat-label">SLOT</div>
+      <div class="stat-value" id="stat-slot">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">TXNS</div>
+      <div class="stat-value" id="stat-txns">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">VALIDATORS</div>
+      <div class="stat-value" id="stat-validators">—</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">FAUCET</div>
+      <div class="stat-value" id="stat-faucet">—</div>
+    </div>
+    <div class="stat status-pill">
+      <div class="dot" id="status-dot"></div>
+      <span id="status-text">connecting</span>
+    </div>
+  </section>
+
+  <section class="grid">
+
+    <article class="card connect">
+      <h2 class="card-title">// CONNECT</h2>
+      <p class="card-sub">Point any Solana wallet or CLI at this RPC.</p>
+
+      <div class="endpoint-row" data-copy="rpc">
+        <span class="row-label">RPC</span>
+        <code id="rpc-url">http://77.42.80.65:8911</code>
+        <button class="copy-btn" data-target="rpc-url">copy</button>
+      </div>
+
+      <details class="cli-details">
+        <summary>Solana CLI</summary>
+<pre><span class="prompt">$</span> solana config set --url <span class="hl" id="cli-url">http://77.42.80.65:8911</span>
+<span class="prompt">$</span> solana airdrop 10
+<span class="prompt">$</span> solana balance</pre>
+      </details>
+
+      <details class="cli-details">
+        <summary>Phantom / Backpack / Solflare</summary>
+<pre>Settings → Developer Settings → Change Network →
+  Add Custom RPC →
+    Name:   <span class="hl">Ooze Labs</span>
+    URL:    <span class="hl rpc-inline">http://77.42.80.65:8911</span></pre>
+      </details>
+    </article>
+
+    <article class="card drip">
+      <h2 class="card-title">// DRIP</h2>
+      <p class="card-sub">Free test SOL. <span class="warn">Not real money.</span> One drip per wallet every 24h. Cap of 666 SOL.</p>
+
+      <form id="drip-form" autocomplete="off">
+        <label class="field">
+          <span>WALLET</span>
+          <input type="text" id="drip-wallet" placeholder="paste solana address" spellcheck="false" required>
+        </label>
+
+        <label class="field">
+          <span>AMOUNT (SOL)</span>
+          <input type="number" id="drip-amount" value="100" min="1" max="666" required>
+        </label>
+
+        <button type="submit" id="drip-submit" class="primary-btn">
+          <span class="btn-glyph">&gt;</span> dripping...
+        </button>
+      </form>
+
+      <div class="drip-status" id="drip-status" aria-live="polite"></div>
+
+      <div class="future">
+        <span class="dim">// roadmap</span>
+        <span class="badge soon">connect wallet</span>
+        <span class="badge soon">send tx</span>
+        <span class="badge soon">launch token</span>
+        <span class="badge soon">bundle demo</span>
+      </div>
+    </article>
+
+  </section>
+
+  <section class="footer-strip">
+    <span>VRF-FAIR ORDERING ENGAGED</span>
+    <span class="sep">·</span>
+    <span>FAUCET: <code id="faucet-pubkey-foot">…</code></span>
+    <span class="sep">·</span>
+    <span>VALIDATOR: <code id="validator-id-foot">…</code></span>
+  </section>
+
+  <section class="readme">
+    <h3>// what is this</h3>
+    <p>
+      Ooze Labs is a single-node Solana test-validator running the Ooze fair-ordering scheduler.
+      Every transaction submitted gets queued, then VRF-shuffled before being added to a block.
+      Priority fees still flow to the validator, but ordering is randomized — so atomic bundling,
+      sandwich attacks, and snipe-the-launch flows lose reliability. Arbitrage still works.
+    </p>
+    <p>
+      Test SOL has no value. The chain is one node, no consensus security, no permanence guarantees.
+      Use this to: kick the tires on Ooze, build dApps against an MEV-resistant RPC, demo fairness
+      to your friends, mess around.
+    </p>
+    <p class="dim">
+      Built on agave 4.1.0-alpha with a custom <code>--block-production-method ooze</code> scheduler.
+      <a href="https://github.com/SwagasaurusFLEX/ooze-validator" target="_blank" rel="noopener">source</a>.
+    </p>
+  </section>
+
+</main>
+
+<footer class="page-footer">
+  <span>OOZE.RUN © 2026</span>
+  <span class="sep">·</span>
+  <a href="https://twitter.com/0ooozzzzeeee" target="_blank" rel="noopener">@0ooozzzzeeee</a>
+</footer>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
