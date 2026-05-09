@@ -8,7 +8,6 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<!-- JetBrains Mono for body, VT323 for the big terminal display -->
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=VT323&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="/static/style.css">
@@ -27,6 +26,11 @@
     <a href="https://github.com/SwagasaurusFLEX" target="_blank" rel="noopener">GITHUB</a>
     <a href="https://twitter.com/0ooozzzzeeee" target="_blank" rel="noopener">X</a>
   </nav>
+  <div class="topbar-wallet">
+    <button id="wallet-btn" class="wallet-btn" type="button">
+      <span class="wallet-btn-label">CONNECT</span>
+    </button>
+  </div>
 </header>
 
 <main>
@@ -76,6 +80,11 @@
         <button class="copy-btn" data-target="rpc-url">copy</button>
       </div>
 
+      <button id="add-rpc-btn" class="ghost-btn" type="button" disabled>
+        <span class="btn-glyph">+</span> add ooze rpc to wallet
+      </button>
+      <div class="add-rpc-hint" id="add-rpc-hint">connect a wallet first to use this</div>
+
       <details class="cli-details">
         <summary>Solana CLI</summary>
 <pre><span class="prompt">$</span> solana config set --url <span class="hl" id="cli-url">http://77.42.80.65:8911</span>
@@ -99,7 +108,10 @@
       <form id="drip-form" autocomplete="off">
         <label class="field">
           <span>WALLET</span>
-          <input type="text" id="drip-wallet" placeholder="paste solana address" spellcheck="false" required>
+          <div class="field-row">
+            <input type="text" id="drip-wallet" placeholder="paste address — or connect wallet" spellcheck="false" required>
+            <button type="button" id="drip-use-connected" class="ghost-mini" hidden>use connected</button>
+          </div>
         </label>
 
         <label class="field">
@@ -108,7 +120,7 @@
         </label>
 
         <button type="submit" id="drip-submit" class="primary-btn">
-          <span class="btn-glyph">&gt;</span> dripping...
+          <span class="btn-glyph">&gt;</span> drip
         </button>
       </form>
 
@@ -116,7 +128,6 @@
 
       <div class="future">
         <span class="dim">// roadmap</span>
-        <span class="badge soon">connect wallet</span>
         <span class="badge soon">send tx</span>
         <span class="badge soon">launch token</span>
         <span class="badge soon">bundle demo</span>
@@ -159,6 +170,33 @@
   <span class="sep">·</span>
   <a href="https://twitter.com/0ooozzzzeeee" target="_blank" rel="noopener">@0ooozzzzeeee</a>
 </footer>
+
+<!-- ─── Wallet picker modal ─── -->
+<div class="modal-overlay" id="wallet-modal" hidden>
+  <div class="modal" role="dialog" aria-labelledby="wallet-modal-title">
+    <div class="modal-header">
+      <h3 id="wallet-modal-title">// select wallet</h3>
+      <button class="modal-close" id="wallet-modal-close" aria-label="close">×</button>
+    </div>
+    <div class="modal-body">
+      <button class="wallet-option" data-wallet="phantom">
+        <span class="wallet-name">Phantom</span>
+        <span class="wallet-status" data-wallet-status="phantom">checking…</span>
+      </button>
+      <button class="wallet-option" data-wallet="solflare">
+        <span class="wallet-name">Solflare</span>
+        <span class="wallet-status" data-wallet-status="solflare">checking…</span>
+      </button>
+      <button class="wallet-option" data-wallet="backpack">
+        <span class="wallet-name">Backpack</span>
+        <span class="wallet-status" data-wallet-status="backpack">checking…</span>
+      </button>
+    </div>
+    <div class="modal-foot">
+      <span class="dim">on mobile? we'll deep-link the wallet app.</span>
+    </div>
+  </div>
+</div>
 
 <script src="/static/app.js"></script>
 </body>
