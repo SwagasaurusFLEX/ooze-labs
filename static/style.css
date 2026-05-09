@@ -528,24 +528,34 @@ main {
 }
 
 .ghost-mini {
-  background: transparent;
-  border: 1px solid var(--line);
-  color: var(--fg-dim);
+  background: rgba(108, 255, 158, 0.08);
+  border: 1px solid var(--ooze-soft);
+  color: var(--ooze);
   font-family: var(--mono);
   font-size: 10px;
+  font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  padding: 0 12px;
+  padding: 0 14px;
   border-radius: 3px;
   cursor: pointer;
   transition: all 0.15s;
   white-space: nowrap;
+  box-shadow: 0 0 12px var(--ooze-glow-soft);
+  animation: pulse-glow 2.4s ease-in-out infinite;
 }
 
 .ghost-mini:hover {
-  color: var(--ooze);
-  border-color: var(--ooze-soft);
-  background: rgba(108, 255, 158, 0.04);
+  background: var(--ooze);
+  color: #001306;
+  border-color: var(--ooze);
+  box-shadow: 0 0 18px var(--ooze-glow);
+  animation: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--ooze-glow-soft); }
+  50% { box-shadow: 0 0 18px var(--ooze-glow); }
 }
 
 .drip input {
