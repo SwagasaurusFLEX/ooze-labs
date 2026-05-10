@@ -13,13 +13,17 @@
   --fg-dim: #6a7a72;
   --fg-mute: #3d4a44;
 
-  --ooze: #6cff9e;        /* primary accent */
+  --ooze: #6cff9e;
   --ooze-soft: #2a8c4f;
   --ooze-glow: rgba(108, 255, 158, 0.45);
   --ooze-glow-soft: rgba(108, 255, 158, 0.12);
 
   --warn: #ffd66c;
   --err: #ff6c6c;
+
+  --phos: #00ff41;
+  --phos-glow: rgba(0, 255, 65, 0.55);
+  --phos-glow-soft: rgba(0, 255, 65, 0.15);
 
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
   --display: 'VT323', var(--mono);
@@ -78,7 +82,7 @@ body {
 .topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 18px;
   padding: 18px 28px;
   border-bottom: 1px solid var(--line);
   background: rgba(5, 8, 7, 0.8);
@@ -96,11 +100,13 @@ body {
   color: var(--ooze);
   text-decoration: none;
   text-shadow: 0 0 14px var(--ooze-glow);
+  flex-shrink: 0;
 }
 
 .topbar nav {
   display: flex;
   gap: 22px;
+  margin-left: auto;
 }
 
 .topbar nav a {
@@ -114,6 +120,50 @@ body {
 
 .topbar nav a:hover { color: var(--fg); }
 .topbar nav a.active { color: var(--ooze); }
+
+/* wallet button in topbar */
+.topbar-wallet {
+  flex-shrink: 0;
+}
+
+.wallet-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--ooze-soft);
+  color: var(--ooze);
+  padding: 8px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.wallet-btn:hover {
+  background: rgba(108, 255, 158, 0.06);
+  border-color: var(--ooze);
+  box-shadow: 0 0 12px var(--ooze-glow-soft);
+}
+
+.wallet-btn.connected {
+  border-color: var(--ooze);
+  background: rgba(108, 255, 158, 0.07);
+}
+
+.wallet-btn.connected::before {
+  content: '';
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--ooze);
+  margin-right: 6px;
+  vertical-align: middle;
+  box-shadow: 0 0 8px var(--ooze);
+  animation: pulse 1.6s ease-in-out infinite;
+}
 
 /* ----- main layout ----- */
 
@@ -311,7 +361,7 @@ main {
   border: 1px solid var(--line);
   border-radius: var(--radius);
   padding: 12px 14px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
 }
 
 .row-label {
@@ -357,6 +407,49 @@ main {
   color: var(--ooze);
   border-color: var(--ooze);
 }
+
+/* ghost button (add-rpc, etc.) */
+
+.ghost-btn {
+  width: 100%;
+  background: transparent;
+  border: 1px dashed var(--line);
+  color: var(--fg-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 11px 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.ghost-btn:not(:disabled):hover {
+  color: var(--ooze);
+  border-color: var(--ooze-soft);
+  border-style: solid;
+  background: rgba(108, 255, 158, 0.04);
+}
+
+.ghost-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.add-rpc-hint {
+  font-size: 11px;
+  color: var(--fg-mute);
+  letter-spacing: 0.5px;
+  margin: 8px 0 18px;
+  min-height: 1.4em;
+  transition: color 0.2s;
+}
+
+.add-rpc-hint[data-state="ok"] { color: var(--ooze); }
+.add-rpc-hint[data-state="err"] { color: var(--err); }
+
+/* CLI details */
 
 .cli-details {
   border-top: 1px solid var(--line);
@@ -427,6 +520,48 @@ main {
   margin-bottom: 6px;
 }
 
+.field-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.field-row input {
+  flex: 1;
+  min-width: 0;
+}
+
+.ghost-mini {
+  background: rgba(108, 255, 158, 0.08);
+  border: 1px solid var(--ooze-soft);
+  color: var(--ooze);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  padding: 0 14px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  box-shadow: 0 0 12px var(--ooze-glow-soft);
+  animation: pulse-glow 2.4s ease-in-out infinite;
+}
+
+.ghost-mini:hover {
+  background: var(--ooze);
+  color: #001306;
+  border-color: var(--ooze);
+  box-shadow: 0 0 18px var(--ooze-glow);
+  animation: none;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 8px var(--ooze-glow-soft); }
+  50% { box-shadow: 0 0 18px var(--ooze-glow); }
+}
+
 .drip input {
   width: 100%;
   padding: 12px 14px;
@@ -479,6 +614,8 @@ main {
 }
 
 .btn-glyph { color: #001306; margin-right: 4px; }
+.ghost-btn .btn-glyph,
+.ghost-mini .btn-glyph { color: inherit; }
 
 .drip-status {
   margin-top: 14px;
@@ -535,27 +672,58 @@ main {
   margin-bottom: 32px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.2s, box-shadow 0.2s, transform 0.05s;
+  transition: border-color 0.3s, box-shadow 0.3s, transform 0.05s;
   cursor: pointer;
   animation: fade-up 0.6s 0.3s ease both;
+  isolation: isolate;
 }
 
+/* the map "porthole" — sits behind content, hidden until hover */
+.watch-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/static/world-map.svg");
+  background-repeat: no-repeat;
+  /* desktop default: equator band, wide horizontal slice */
+  background-size: 180% auto;
+  background-position: center 38%;
+  opacity: 0;
+  filter:
+    invert(1)
+    sepia(1)
+    saturate(600)
+    hue-rotate(59deg)
+    brightness(1.45)
+    drop-shadow(0 0 8px rgb(15, 255, 2));
+  transition: opacity 0.4s ease;
+}
+
+/* top accent line */
 .watch-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
   background: linear-gradient(90deg, transparent, var(--ooze-glow-soft) 30%, transparent);
-  transition: background 0.2s;
+  transition: background 0.3s;
+  z-index: 1;
 }
 
 .watch-card:hover {
-  border-color: var(--ooze-soft);
-  box-shadow: 0 0 28px rgba(108, 255, 158, 0.08);
+  border-color: var(--phos);
+  box-shadow:
+    0 0 28px rgba(0, 255, 65, 0.15),
+    inset 0 0 60px rgba(0, 0, 0, 0.5);
 }
 
 .watch-card:hover::before {
-  background: linear-gradient(90deg, transparent, var(--ooze-glow) 30%, transparent);
+  background: linear-gradient(90deg, transparent, var(--phos-glow) 30%, transparent);
+}
+
+.watch-card:hover::after {
+  opacity: 0.5;
 }
 
 .watch-card:active { transform: translateY(1px); }
@@ -566,6 +734,9 @@ main {
   text-transform: uppercase;
   color: var(--fg-mute);
   margin-bottom: 8px;
+  transition: color 0.3s;
+  position: relative;
+  z-index: 2;
 }
 
 .watch-card-title {
@@ -576,6 +747,9 @@ main {
   text-shadow: 0 0 8px var(--ooze-glow-soft), 0 0 24px var(--ooze-glow-soft);
   line-height: 1;
   margin-bottom: 14px;
+  transition: color 0.3s, text-shadow 0.3s;
+  position: relative;
+  z-index: 2;
 }
 
 .watch-card-link {
@@ -587,18 +761,32 @@ main {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--fg-dim);
-  transition: color 0.2s;
+  transition: color 0.3s;
+  position: relative;
+  z-index: 2;
 }
-
-.watch-card:hover .watch-card-link { color: var(--ooze); }
 
 .watch-card-arrow {
   display: inline-block;
   color: var(--ooze);
-  transition: transform 0.2s;
+  transition: transform 0.2s, color 0.3s;
+}
+
+/* on hover: shift mint → phosphor green to match the watch page palette */
+.watch-card:hover .watch-card-title {
+  color: var(--phos);
+  text-shadow:
+    0 0 4px var(--phos),
+    0 0 12px var(--phos-glow),
+    0 0 28px var(--phos-glow-soft);
+}
+
+.watch-card:hover .watch-card-link {
+  color: var(--phos);
 }
 
 .watch-card:hover .watch-card-arrow {
+  color: var(--phos);
   transform: translateX(4px);
 }
 
@@ -682,6 +870,128 @@ main {
 .page-footer a { color: var(--fg-dim); text-decoration: none; }
 .page-footer a:hover { color: var(--ooze); }
 
+/* ----- wallet modal ----- */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: rgba(0, 0, 0, 0.78);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: modal-fade 0.2s ease-out;
+}
+
+.modal-overlay[hidden] { display: none; }
+
+@keyframes modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal {
+  background: var(--bg-card);
+  border: 1px solid var(--ooze-soft);
+  border-radius: var(--radius);
+  width: 100%;
+  max-width: 380px;
+  box-shadow:
+    0 0 60px rgba(108, 255, 158, 0.15),
+    0 20px 60px rgba(0, 0, 0, 0.6);
+  animation: modal-rise 0.25s ease-out;
+}
+
+@keyframes modal-rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 22px;
+  border-bottom: 1px solid var(--line);
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: var(--ooze);
+  text-transform: uppercase;
+  font-weight: 700;
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--fg-dim);
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 6px;
+  transition: color 0.15s;
+}
+
+.modal-close:hover { color: var(--ooze); }
+
+.modal-body {
+  padding: 14px 14px 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wallet-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 3px;
+  padding: 14px 16px;
+  font-family: var(--mono);
+  color: var(--fg);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.wallet-option:hover {
+  border-color: var(--ooze-soft);
+  background: rgba(108, 255, 158, 0.04);
+}
+
+.wallet-name {
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.wallet-status {
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  transition: color 0.15s;
+}
+
+.wallet-status[data-state="detected"] { color: var(--ooze); }
+.wallet-status[data-state="missing"] { color: var(--fg-mute); }
+.wallet-status[data-state="mobile"] { color: var(--warn); }
+.wallet-status[data-state="err"] { color: var(--err); }
+
+.modal-foot {
+  padding: 8px 22px 18px;
+  text-align: center;
+}
+
 /* ----- entrance animations ----- */
 
 @keyframes fade-up {
@@ -699,14 +1009,35 @@ main {
 
 /* ----- responsive ----- */
 
+@media (max-width: 720px) {
+  .topbar {
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 14px 18px;
+  }
+  .topbar nav {
+    order: 3;
+    width: 100%;
+    justify-content: space-between;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .topbar nav a { font-size: 11px; letter-spacing: 1px; }
+  .topbar-wallet { margin-left: auto; }
+}
+
 @media (max-width: 560px) {
   main { padding: 36px 18px 60px; }
-  .topbar { padding: 14px 18px; }
-  .topbar nav { gap: 14px; }
-  .topbar nav a { font-size: 11px; letter-spacing: 1px; }
   .card { padding: 22px; }
   .endpoint-row { flex-wrap: wrap; }
   .endpoint-row code { width: 100%; }
+  .field-row { flex-direction: column; gap: 6px; align-items: stretch; }
+  .ghost-mini { padding: 10px; font-size: 11px; }
   .watch-card { padding: 22px 24px; }
   .watch-card-title { font-size: 30px; letter-spacing: 3px; }
+  /* on mobile: vertical strip showing east asia (korea/japan) */
+  .watch-card::after {
+    background-size: auto 250%;
+    background-position: 78% center;
+  }
 }
