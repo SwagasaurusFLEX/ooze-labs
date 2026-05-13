@@ -687,8 +687,8 @@ main {
   background-image: url("/static/world-map.svg");
   background-repeat: no-repeat;
   /* desktop default: equator band, wide horizontal slice */
-  background-size: 180% auto;
-  background-position: center 38%;
+  background-size: 120% auto;
+  background-position: center 40%;
   opacity: 0;
   filter:
     invert(1)
