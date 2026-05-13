@@ -22,7 +22,7 @@ from fastapi.staticfiles import StaticFiles
 
 # ---------- config ----------
 
-OOZE_RPC_URL = os.getenv("OOZE_RPC_URL", "http://77.42.80.65:8911")
+OOZE_RPC_URL = os.getenv("OOZE_RPC_URL", "http://77.42.74.189:8911")
 
 FAUCET_PUBKEY = os.getenv("FAUCET_PUBKEY", "sPTUc7gfr9FBs36KbctKujfRNz5xWcyms2dKiRfrdLT")
 MINT_PUBKEY = os.getenv("MINT_PUBKEY", "sPTUc7gfr9FBs36KbctKujfRNz5xWcyms2dKiRfrdLT")
