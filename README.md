@@ -28,7 +28,7 @@ Visit <http://localhost:8000>.
 | var               | default                                              |
 | ----------------- | ---------------------------------------------------- |
 | `OOZE_RPC_URL`    | `http://drip.ooze.run:8911`                            |
-| `OOZE_FAUCET_HOST`| `77.42.74.189`                                        |
+| `OOZE_FAUCET_HOST`| `drip.ooze.run`                                        |
 | `OOZE_FAUCET_PORT`| `8912`                                               |
 | `FAUCET_PUBKEY`   | `sPTUc7gfr9FBs36KbctKujfRNz5xWcyms2dKiRfrdLT`        |
 | `MINT_PUBKEY`     | `sPTUc7gfr9FBs36KbctKujfRNz5xWcyms2dKiRfrdLT`        |
